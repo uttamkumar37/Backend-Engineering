@@ -22,7 +22,7 @@ Java 21, Spring Boot 3.x, PostgreSQL, Kafka, AWS.
 | 8 | Docker, Kubernetes, CI/CD, Terraform, AWS | [topics/08-containers-cicd-cloud.md](topics/08-containers-cicd-cloud.md) |
 | 9 | Observability | [topics/09-observability.md](topics/09-observability.md) |
 | 10 | System design & LLD | [topics/10-system-design-lld.md](topics/10-system-design-lld.md) |
-| 11 | Spring AI (LLM, embeddings, RAG) | topics/11-spring-ai.md |
+| 11 | Spring AI (LLM, embeddings, RAG) | [topics/11-spring-ai.md](topics/11-spring-ai.md) |
 | 12 | DSA maintenance notes | topics/12-dsa-notes.md |
 | 13 | Resume, LinkedIn, mock interview prep | topics/13-resume-interview-prep.md |
 
