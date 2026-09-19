@@ -19,7 +19,7 @@ Java 21, Spring Boot 3.x, PostgreSQL, Kafka, AWS.
 | 5 | Kafka | [topics/05-kafka.md](topics/05-kafka.md) |
 | 6 | Security | [topics/06-security.md](topics/06-security.md) |
 | 7 | Testing | [topics/07-testing.md](topics/07-testing.md) |
-| 8 | Docker, Kubernetes, CI/CD, Terraform, AWS | topics/08-containers-cicd-cloud.md |
+| 8 | Docker, Kubernetes, CI/CD, Terraform, AWS | [topics/08-containers-cicd-cloud.md](topics/08-containers-cicd-cloud.md) |
 | 9 | Observability | topics/09-observability.md |
 | 10 | System design & LLD | topics/10-system-design-lld.md |
 | 11 | Spring AI (LLM, embeddings, RAG) | topics/11-spring-ai.md |
