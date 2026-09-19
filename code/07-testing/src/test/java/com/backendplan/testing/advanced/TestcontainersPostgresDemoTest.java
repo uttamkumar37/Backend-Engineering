@@ -12,11 +12,12 @@ import java.sql.Statement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-// NOT run in this environment - Docker is not installed here, and Testcontainers requires it.
+// Run against Podman (no Docker Desktop needed) via:
+//   DOCKER_HOST=unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}') \
+//   TESTCONTAINERS_RYUK_DISABLED=true mvn test -Dtest=TestcontainersPostgresDemoTest
 // This is exactly the point Topic 3 and Topic 7's concept docs make about H2: an in-memory
 // substitute diverges from real Postgres behavior (JSON columns, specific constraint error
-// types, window functions), which is why this test runs against the REAL Postgres image, not
-// a fake. Run it with a local Docker daemon available: `mvn test -Dtest=TestcontainersPostgresDemoTest`.
+// types, window functions), which is why this test runs against a REAL Postgres image, not a fake.
 @Testcontainers
 class TestcontainersPostgresDemoTest {
 

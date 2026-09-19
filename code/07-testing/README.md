@@ -15,11 +15,17 @@ Two test classes in this project are **deliberately red** — that's the demonst
 `StrictStubbingDemoTest` and `OverMockedOrderServiceTest`. Run everything else with:
 
 ```bash
-mvn test -Dtest="!TestcontainersPostgresDemoTest,!StrictStubbingDemoTest,!OverMockedOrderServiceTest"
+mvn test -Dtest="!StrictStubbingDemoTest,!OverMockedOrderServiceTest"
 ```
 
-`TestcontainersPostgresDemoTest` was **not run** in this environment — no Docker daemon was
-available. Its code is real and correct; run it wherever Docker is available.
+`TestcontainersPostgresDemoTest` runs against **Podman** (no Docker Desktop needed) — confirmed
+passing here via:
+
+```bash
+podman machine start
+DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')" \
+TESTCONTAINERS_RYUK_DISABLED=true mvn test -Dtest=TestcontainersPostgresDemoTest
+```
 
 ## Beginner (`beginner/`)
 
@@ -61,8 +67,8 @@ available. Its code is real and correct; run it wherever Docker is available.
      `body: $.status Expected 'SHIPPED' (String) to be equal to 'CONFIRMED' (String)` — exactly
      the kind of breaking-change detection contract testing exists to provide, without a shared
      E2E environment or the consumer running at all.
-- **TestcontainersPostgresDemoTest** — real, correct code demonstrating a real Postgres
-  (`JSONB`) feature H2 wouldn't faithfully emulate. **Not executed here** (no local Docker).
+- **TestcontainersPostgresDemoTest** — confirmed passing against a real `postgres:16-alpine`
+  container run through Podman, demonstrating a real `JSONB` query H2 wouldn't faithfully emulate.
 
 ## How to use this progression
 
