@@ -13,7 +13,7 @@ Java 21, Spring Boot 3.x, PostgreSQL, Kafka, AWS.
 | # | Topic | File |
 |---|---|---|
 | 1 | Modern Java 21 internals & concurrency | [topics/01-modern-java-21.md](topics/01-modern-java-21.md) |
-| 2 | Spring Boot 3.x internals | topics/02-spring-boot-internals.md |
+| 2 | Spring Boot 3.x internals | [topics/02-spring-boot-internals.md](topics/02-spring-boot-internals.md) |
 | 3 | Data layer: SQL, JPA/Hibernate, Redis, NoSQL | topics/03-data-layer.md |
 | 4 | Microservices patterns | topics/04-microservices-patterns.md |
 | 5 | Kafka | topics/05-kafka.md |
