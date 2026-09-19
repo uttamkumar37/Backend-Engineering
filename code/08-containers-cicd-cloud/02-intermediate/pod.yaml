@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: container-demo-pod
+spec:
+  containers:
+    - name: app
+      image: localhost/container-demo-app:latest
+      ports:
+        - containerPort: 8080
+          hostPort: 8083
+      # readiness failing removes the pod from service endpoints WITHOUT restarting it -
+      # exactly the distinction Topic 8's concept doc makes.
+      readinessProbe:
+        httpGet:
+          path: /health/ready
+          port: 8080
+        periodSeconds: 2
+        failureThreshold: 1
+      # liveness failing gets the container KILLED AND RESTARTED - this app's /health/live
+      # always returns 200, so liveness never fires here; only readiness is exercised below.
+      livenessProbe:
+        httpGet:
+          path: /health/live
+          port: 8080
+        periodSeconds: 5

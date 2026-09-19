@@ -1,0 +1,63 @@
+name: build-once-promote
+
+# The concept doc's core CI/CD claim: build ONE immutable image per commit, then PROMOTE the
+# same image digest through environments - never rebuild per environment. Rebuilding per
+# environment can silently produce a different artifact than what was tested, even from the
+# same source commit (a floating dependency version, a different build-time env var).
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    outputs:
+      image-digest: ${{ steps.build.outputs.digest }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Run tests
+        run: mvn -B verify
+
+      - name: Log in to registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # ONE build, tagged by commit SHA - this exact image (by digest) is what gets promoted,
+      # never rebuilt, through every later stage.
+      - name: Build and push image
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy-staging:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      # deploys the SAME digest built above - no rebuild, no "mvn package" here at all
+      - name: Deploy image to staging
+        run: echo "deploying ${{ needs.build-and-test.outputs.image-digest }} to staging"
+
+  deploy-production:
+    needs: [build-and-test, deploy-staging]
+    runs-on: ubuntu-latest
+    environment: production # gated: requires a manual approval configured on this environment
+    steps:
+      # still the SAME digest - what passed staging is byte-for-byte what reaches production
+      - name: Deploy image to production
+        run: echo "deploying ${{ needs.build-and-test.outputs.image-digest }} to production"
